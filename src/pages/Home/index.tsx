@@ -75,6 +75,7 @@ import { DraggableModal } from '../../components/shared/DraggableModal';
 import { motion, AnimatePresence } from 'motion/react';
 import Swal from 'sweetalert2';
 import RealTimeSummary from './components/RealTimeSummary';
+import ExecutiveSummaryDashboard from './components/ExecutiveSummaryDashboard';
 
 // --- Theme Configuration (Vibrant Palette) ---
 const THEME = {
@@ -787,6 +788,8 @@ export default function Home() {
       <HeroBanner />
 
       <RealTimeSummary />
+
+      <ExecutiveSummaryDashboard />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {MOCK_STATS.map((stat, idx) => (

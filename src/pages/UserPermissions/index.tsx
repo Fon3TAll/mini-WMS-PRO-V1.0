@@ -4,6 +4,7 @@ import * as Icons from 'lucide-react';
 import { DraggableModal } from '../../components/shared/DraggableModal';
 
 import { SYSTEM_MODULES } from '../../config/modules';
+import UserPermissionsGuide from './components/UserPermissionsGuide';
 
 // --- Theme Configuration (Synced with Home Palette) ---
 const THEME = {
@@ -450,6 +451,9 @@ export default function UserPermission() {
                   <button onClick={() => setActiveTab('staff')} className={`px-6 py-2.5 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'staff' ? 'bg-[#212c46] text-white shadow-md' : 'text-[#7a8b95] hover:text-[#a94228]'}`}>
                     <Icons.Users size={16} /> Staff Access
                   </button>
+                  <button onClick={() => setActiveTab('manual')} className={`px-6 py-2.5 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'manual' ? 'bg-[#212c46] text-white shadow-md' : 'text-[#7a8b95] hover:text-[#a94228]'}`}>
+                    <Icons.FileText size={16} /> Security Manual
+                  </button>
               </div>
           </div>
       </div>
@@ -533,6 +537,8 @@ export default function UserPermission() {
                         </div>
                     </div>
                 </div>
+            ) : activeTab === 'manual' ? (
+                <UserPermissionsGuide />
             ) : (
                 <div className="bg-white rounded-3xl shadow-lg border border-[#eaeaec] overflow-hidden flex flex-col animate-fadeIn">
                     <div className="px-8 py-4 border-b border-[#eaeaec] bg-[#f8f9fa] flex flex-col md:flex-row justify-between items-center gap-4 shrink-0">

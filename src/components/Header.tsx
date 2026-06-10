@@ -8,7 +8,7 @@ import { useNotifications, NotificationItem } from '../context/NotificationConte
 import { useLanguage } from '../context/LanguageContext';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function Header({ onOpenScanner }: { onOpenScanner?: () => void }) {
+export default function Header() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'alerts' | 'tasks' | 'system'>('all');
@@ -160,42 +160,6 @@ export default function Header({ onOpenScanner }: { onOpenScanner?: () => void }
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1.5 mr-2">
-          {/* Orientation Toggle */}
-          <button
-            onClick={() => {
-              const root = document.documentElement;
-              const currentSize = root.style.getPropertyValue('--print-page-size') || 'A4 portrait';
-              root.style.setProperty('--print-page-size', currentSize.includes('portrait') ? 'A4 landscape' : 'A4 portrait');
-            }}
-            className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#5f7ab7] hover:bg-slate-50 transition-all border border-[#cdd0db]/50 hover:scale-105 shrink-0 group"
-            title="Toggle Print Orientation (Portrait/Landscape)"
-          >
-            <LayoutDashboard size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-          </button>
-
-          {/* Print Watermark Toggle */}
-          <button
-            onClick={() => window.toggleConfidentialWatermark && window.toggleConfidentialWatermark()}
-            className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-rose-500 hover:bg-rose-50 transition-all border border-[#cdd0db]/50 hover:scale-105 shrink-0 group"
-            title="Toggle Confidential Watermark"
-          >
-            <ShieldAlert size={16} className="group-hover:-rotate-12 transition-transform" />
-          </button>
-          
-          {/* Print Preview Button */}
-          <button
-            onClick={() => {
-              window.print();
-            }}
-            className="px-3 md:px-4 h-10 rounded-full bg-[#1a253d] shadow-md flex items-center justify-center text-[#e5b73b] hover:bg-[#212c46] hover:text-[#f8d264] transition-all border border-[#cdd0db]/20 hover:scale-105 shrink-0 gap-2 shrink-0 group"
-            title="Print Preview / Export PDF"
-          >
-            <Printer size={16} className="group-hover:scale-110 transition-transform" />
-            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider hidden sm:block">Print Preview</span>
-          </button>
-        </div>
-
         {/* Language Toggle */}
         <div className="flex items-center bg-white rounded-full shadow-sm p-1 border border-[#cdd0db]/50 h-11 gap-0.5">
           <button
@@ -235,17 +199,6 @@ export default function Header({ onOpenScanner }: { onOpenScanner?: () => void }
           </div>
         </div>
         
-        {onOpenScanner && (
-          <button 
-            onClick={onOpenScanner}
-            className="relative w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center text-emerald-600 hover:bg-slate-50 transition-all group border border-[#cdd0db]/50 hover:scale-105 shrink-0"
-            title="เปิดระบบสแกนบาร์โค้ดสะสม (WMS Smart Scanner)"
-          >
-            <QrCode size={18} className="group-hover:scale-110 transition-transform" strokeWidth={2} />
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_0_2px_#ffffff]"></span>
-          </button>
-        )}
-
         {/* Global Notification Center drop-down trigger */}
         <div className="relative" ref={dropdownRef}>
           <button 

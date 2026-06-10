@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
-import { Printer, Settings, Eye, Download, X } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Printer, Settings, Eye, Download, X, CheckSquare, Square } from 'lucide-react';
 import { DraggableModal } from './DraggableModal';
 import { useLanguage } from '../../context/LanguageContext';
+import { useAuth } from '../../context/AuthContext';
 
 interface PrintPreviewModalProps {
   isOpen: boolean;
@@ -21,9 +22,15 @@ export function PrintPreviewModal({
   children
 }: PrintPreviewModalProps) {
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const [showDigitalApproval, setShowDigitalApproval] = useState(true);
+
   const currentDate = new Date().toLocaleDateString('th-TH', { 
     year: 'numeric', month: 'long', day: 'numeric' 
   });
+
+  const userName = user?.name || "System Operator";
+  const userRole = user?.role || "Quality Inspector";
 
   const handlePrint = () => {
     window.print();
@@ -48,17 +55,28 @@ export function PrintPreviewModal({
               <span className="text-slate-400">1 / 1</span>
             </div>
          </div>
-         <div className="flex items-center gap-2">
-            <button 
-                onClick={handlePrint}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer" 
-                title={t("พิมพ์เอกสาร", "Print PDF")}
-            >
-              <Printer size={20} />
-            </button>
-            <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer" title="Download PDF">
-              <Download size={20} />
-            </button>
+         <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 text-white text-[11px] font-sans cursor-pointer select-none hover:bg-white/10 px-2 py-1.5 rounded transition-all">
+              <input 
+                type="checkbox" 
+                checked={showDigitalApproval} 
+                onChange={(e) => setShowDigitalApproval(e.target.checked)}
+                className="rounded border-none accent-[#b58c4f] focus:ring-0 focus:ring-offset-0"
+              />
+              <span className="font-semibold uppercase tracking-wider">{t("อนุมัติดิจิทัล", "Digital Approval")}</span>
+            </label>
+            <div className="flex items-center gap-1">
+              <button 
+                  onClick={handlePrint}
+                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer" 
+                  title={t("พิมพ์เอกสาร", "Print PDF")}
+              >
+                <Printer size={18} />
+              </button>
+              <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer" title="Download PDF">
+                <Download size={18} />
+              </button>
+            </div>
          </div>
       </div>
 
@@ -105,10 +123,29 @@ export function PrintPreviewModal({
                       <p>46 หมู่ที่ 5 ตำบลคลองสี่ อำเภอคลองหลวง จังหวัดปทุมธานี 12120</p>
                       <p className="mt-2 text-[9px] uppercase tracking-wider text-slate-400">Generated on: {currentDate}</p>
                   </div>
-                  <div className="w-[200px] flex flex-col items-center justify-end text-center pt-8">
-                      <div className="w-[150px] border-b border-[#212c46] border-dashed mb-2"></div>
-                      <span className="text-[11px] font-black uppercase text-[#212c46] tracking-widest">AUTHORIZED SIGNATURE</span>
-                      <span className="text-[9px] font-bold text-slate-500 mt-1 uppercase">Operations Manager</span>
+                  <div className="flex items-center gap-6">
+                      {showDigitalApproval && (
+                          <div className="w-[190px] flex flex-col items-center justify-center text-center p-3 border-2 border-dashed border-emerald-600/30 bg-emerald-50/20 rounded-xl relative my-1 select-none animate-fadeIn">
+                              <div className="absolute -top-2.5 bg-emerald-600 text-white rounded px-2 py-0.5 text-[8px] font-black tracking-widest uppercase">
+                                  Digitally Approved
+                              </div>
+                              <span className="text-[11px] font-bold text-[#212c46] font-mono mt-1 italic tracking-wide h-4 flex items-center justify-center">
+                                  / {userName} /
+                              </span>
+                              <div className="text-[8px] font-medium text-slate-400 border-t border-slate-200/60 w-full pt-1.5 mt-1">
+                                  ID: {user?.employeeId || "EMP-2026"}
+                              </div>
+                              <span className="text-[9px] font-black uppercase text-emerald-700 tracking-wider mt-0.5">
+                                  {userRole}
+                              </span>
+                          </div>
+                      )}
+
+                      <div className="w-[180px] flex flex-col items-center justify-end text-center pt-8">
+                          <div className="w-[140px] border-b border-[#212c46] border-dashed mb-2"></div>
+                          <span className="text-[10px] font-black uppercase text-[#212c46] tracking-widest">AUTHORIZED SIGNATURE</span>
+                          <span className="text-[8px] font-bold text-slate-500 mt-1 uppercase">Operations Manager</span>
+                      </div>
                   </div>
               </div>
           </div>
