@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "JetBrains Mono", "Noto Sans Thai", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "Noto Sans Thai", monospace;
+  --font-serif: "Cinzel", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  
+  /* Primary Font Strategy: English/Numbers (Mono) -> Thai (Noto) -> UI (Inter) */
+  --font-strategy: 'JetBrains Mono', 'Noto Sans Thai', 'Inter', sans-serif;
+}
+
+body { 
+  font-family: var(--font-strategy);
+  @apply text-slate-800 antialiased;
+}
+
+/* Typography Utility Classes */
+.font-ui {
+  font-family: 'Inter', 'Noto Sans Thai', sans-serif !important;
+}
+
+.font-technical {
+  font-family: 'JetBrains Mono', 'Noto Sans Thai', sans-serif !important;
+}
+
+/* Exceptions as per user request */
+.font-exception-header {
+  /* Used for Page Headers and Titles */
+  font-family: 'Inter', 'Noto Sans Thai', sans-serif !important;
+}
+
+.font-exception-system {
+  /* Used for System Name / Logo */
+  font-family: 'Inter', 'Noto Sans Thai', sans-serif !important;
+}
+
+.font-exception-hero {
+  /* Used for Hero Banners */
+  font-family: 'Inter', 'Noto Sans Thai', sans-serif !important;
+}
+
+.font-exception-greeting {
+  /* Used for Greetings, forced to 500 weight */
+  font-family: 'Inter', 'Noto Sans Thai', sans-serif !important;
+  font-weight: 500 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar { width: 4px; height: 5px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #5372ba22; border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #5372ba44; }
+
+.sidebar-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+.sidebar-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+
+.chat-bubble-user {
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+}
+
+.chat-bubble-ai {
+  border-radius: 1.25rem 1.25rem 1.25rem 0.25rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =========================================
+   PRINT STYLES (PDF Generation Support) 
+   ========================================= */
+
+@media print {
+  /* Hide non-printable app wrapper UI */
+  .no-print, nav, sidebar, header.app-header {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force exact colors for badges and layout */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Print Stylesheet Optimization for Tables */
+  .print-layout-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto !important;
+  }
+
+  .print-layout-table tbody tr {
+    page-break-inside: avoid !important;
+    page-break-after: auto !important;
+    break-inside: avoid !important;
+  }
+
+  /* Confidential Watermark */
+  @page {
+    /* Allow toggle of size from JS */
+    size: var(--print-page-size, A4 portrait);
+    margin: 1.5cm;
+    /* Auto increment page number in modern browsers (Safari/Chrome support limited but standard via CSS) */
+  }
+
+  body[data-print-watermark="CONFIDENTIAL"]::after {
+    content: "CONFIDENTIAL";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(220, 38, 38, 0.1) !important;
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+  }
+}
+
+/* Page Number Generation Setup */
+.print-footer-page-number {
+  position: absolute;
+  right: 15px;
+  bottom: 0px;
+  font-size: 10px;
+  color: #7a8b95;
+  font-weight: bold;
+}
+
+.print-footer-page-number::after {
+  counter-increment: page;
+  content: "Page " counter(page);
+}
+
+/* For full layout control during print preview modal mode */
+.print-preview-mode {
+  background: #525659 !important; /* PDF Viewer gray background */
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.print-preview-page {
+  background: white;
+  width: 210mm; /* A4 Width */
+  min-height: 297mm; /* A4 Height */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 10px 15px -3px rgba(0,0,0,0.1);
+  padding: 20mm;
+  position: relative;
+  counter-reset: page;
+}
+
+.print-preview-page.landscape {
+  width: 297mm;
+  min-height: 210mm;
+}
+
+/* Base print container limits */
+.print-container {
+  max-width: 100%;
+}
+

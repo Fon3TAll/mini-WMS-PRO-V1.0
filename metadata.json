@@ -1,0 +1,10 @@
+{
+  "name": "mini WMS PRO V1.0 - draft",
+  "description": "ระบบบริหารจัดการ WMS คลังสินค้าอัจฉริยะ สำหรับโรงงาน SMEs ขนาดเล็ก",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
